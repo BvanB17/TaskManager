@@ -11,9 +11,7 @@ class TaskManager():
         existing_task.task_id = self.next_task_id
         self.tasks.append(existing_task)
         self.next_task_id += 1
-        print(f"Ok, {existing_task} has been added to your task list!")
-    
-
+  
     def get_task(self, task_id):
         for task in self.tasks:
             if task_id == task.task_id:
@@ -23,39 +21,54 @@ class TaskManager():
 
     def remove_task(self, task_id):
         found_task = self.get_task(task_id)
-        if found_task is not None:
+        if found_task is None:
+            return False
+        else:
             self.tasks.remove(found_task)
-        else:
-            print("Sorry, that task ID doesn't seem to match any current tasks.")
+        return True
 
-
-
-    def display_tasks(self):
-        if not self.tasks:
-            print("You are all caught up! There are no tasks!")
-        else:
-            for task in self.tasks:
-                print(task)
-
-    def update_task(self, task_id):
+    def complete_task(self, task_id,):
         found_task = self.get_task(task_id)
-        if found_task is not None:
-            method_choice = input("Which property do you want to edit?: ").capitalize()
+        if found_task is None:
+            return False
         else:
-            print("Sorry, that task ID doesn't seem to match any current tasks.")
-            return
+            found_task.mark_complete()
+        return True
 
-        if method_choice == "Title":
-            new_title = input("Ok, you want to change the title to what?: ")
-            found_task.update_title(new_title)
-            return found_task
-        elif method_choice == "Description":
-            new_description = input("Ok, what is the new description of this task?: ")
-            found_task.update_description(new_description)
-            return found_task
-        elif method_choice == "Priority":
-            new_priority = input("Ok, what is the new level of Priority?: ")
-            found_task.update_priority(new_priority)
-            return found_task
+    def get_all_tasks(self):
+            return self.tasks
+
+    def get_tasks_by_priority(self, priority,):
+        found_tasks = []
+        for task in self.tasks:
+            if task.priority == priority.capitalize():
+                found_tasks.append(task)
+        return found_tasks
+
+    def get_incomplete_tasks(self,):
+        found_tasks = []
+        for task in self.tasks:
+            if not task.completed:
+                found_tasks.append(task)
+        return found_tasks    
+
+    def update_task(self, task_id, option, new_value):
+        found_task = self.get_task(task_id)
+        if found_task is None:
+            return False
         else:
-            print("Sorry, this is not something that I can change for you.")
+
+            if option is None:
+                return False
+            elif option.capitalize() == "Title":
+                found_task.update_title(new_value)
+            elif option.capitalize() == "Description":
+                found_task.update_description(new_value)
+            elif option.capitalize() == "Priority":
+                found_task.update_priority(new_value)
+            else:
+                return False
+            
+            return True
+
+
