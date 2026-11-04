@@ -8,10 +8,14 @@ class TaskManager():
 
 
     def add_task(self,existing_task, ):
+        if not isinstance(existing_task, Task):
+            raise TypeError("You must pick a task.")
+        
         existing_task.task_id = self.next_task_id
         self.tasks[self.next_task_id] = existing_task
         self.next_task_id += 1
-        print(f"Ok, {existing_task} has been added to your task list!")
+
+        return existing_task.task_id
     
 
     def get_task(self, task_id):
@@ -20,38 +24,30 @@ class TaskManager():
     def remove_task(self, task_id):
         found_task = self.get_task(task_id)
         if found_task is not None:
-            self.tasks.remove(found_task)
+            del self.tasks[task_id]
+            return True
         else:
-            print("Sorry, that task ID doesn't seem to match any current tasks.")
+            return False
 
 
 
     def display_tasks(self):
         if not self.tasks:
-            print("You are all caught up! There are no tasks!")
+            return False
         else:
-            for task in self.tasks:
+            for task in self.tasks.values():
                 print(task)
+            return True
 
-    def update_task(self, task_id):
+    def update_task(self, task_id, property_name, new_value,):
         found_task = self.get_task(task_id)
-        if found_task is not None:
-            method_choice = input("Which property do you want to edit?: ").capitalize()
+        if found_task is None:
+            return False
+        if property_name == "Title":
+            return found_task.update_title(new_value)
+        elif property_name == "Description":
+            return found_task.update_description(new_value)
+        elif property_name == "Priority":
+            return found_task.update_priority(new_value)            
         else:
-            print("Sorry, that task ID doesn't seem to match any current tasks.")
-            return
-
-        if method_choice == "Title":
-            new_title = input("Ok, you want to change the title to what?: ")
-            found_task.update_title(new_title)
-            return found_task
-        elif method_choice == "Description":
-            new_description = input("Ok, what is the new description of this task?: ")
-            found_task.update_description(new_description)
-            return found_task
-        elif method_choice == "Priority":
-            new_priority = input("Ok, what is the new level of Priority?: ")
-            found_task.update_priority(new_priority)
-            return found_task
-        else:
-            print("Sorry, this is not something that I can change for you.")
+            raise ValueError("Invalid Property Name.")
