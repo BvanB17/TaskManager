@@ -12,4 +12,6 @@ manager.add_task(task2)
 
 task = manager.get_task(2)
 
-print(task)
+#print(task)
+
+print(manager.get_task(2))
