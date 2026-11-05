@@ -66,4 +66,4 @@ class Task:
 
 
     def __str__(self):
-        return f"Task: {self.title} | Priority: {self.priority} | Task ID: {self.task_id} \n Description: {self.description} | Completed?: {self.completed}"
+        return f"Task: {self.title} \n Priority: {self.priority} \n Task ID: {self.task_id} \n Description: {self.description} \n Completed?: {self.completed}"
