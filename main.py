@@ -21,6 +21,7 @@ def main():
         print("5. Exit")    
 
         choice = input("Select an Option: ")
+
         if choice == "1":
             if manager.tasks:
                 for task in manager.tasks.values():
@@ -61,16 +62,28 @@ def main():
                 if update_result:
                     print(f"Ok, The new value of {property_to_update} is  {updated_value}!")
 
+        elif choice == "4":
+
+            task_to_remove_id = int(input("What is the Task ID of the task you want to update?: "))
+            print(manager.tasks[task_to_remove_id])
+            make_sure = input("Are you sure you want to delete this task?(y/n): ").strip()
+
+
+            if make_sure == "y":
+
+                try:
+                    task_to_remove = manager.remove_task(task_to_remove_id)
+                    if task_to_remove:
+                        print(f"Okay, {task_to_remove_id}| is gone!")
+                except (ValueError) as error:
+                    print(error)
+
+            print("Okay, returning to menu.")    
 
 
         elif choice == "5":
             print("Shutting Down...")
             running = False
-
-
-
-
-
 
 
 if __name__ == "__main__":
